@@ -96,6 +96,7 @@ app.get("/resetpassword/:user/:str",cors(),async(req,res)=>{
     let data = await db.collection("passreset").findOne({"user_name":req.params.user})
     console.log(data["randomString"])
     console.log(req.params.str)
+    res.status(200).json({"data":data["randomString"],"params":req.params.str})
 
 })
 app.listen(port,()=>console.log("app started at "+port))
