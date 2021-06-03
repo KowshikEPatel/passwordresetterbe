@@ -76,7 +76,7 @@ app.post("/forgotpw",cors(),async (req,res)=>{
     },
   });
 
-  let randomURL = `https://kp-passwordresetter.herokuapp.com/resetpassword/${data["user_name"]}`+randomstring.generate()
+  let randomURL = `https://kp-passwordresetter.herokuapp.com/resetpassword/`+randomstring.generate()
   let stored  = await db.collection('passreset').findOneAndUpdate(req.body,{$set:{"randomString":randomURL}})
   let info = await transporter.sendMail({
     from: '"felicia24@ethereal.email" <felicia24@ethereal.email>', // sender address
@@ -89,11 +89,11 @@ app.post("/forgotpw",cors(),async (req,res)=>{
     res.status(200).json({info,stored})
 })
 
-app.get("/resetpassword/:user/:str",cors(),async(req,res)=>{
+app.get("/resetpassword/:str",cors(),async(req,res)=>{
 
     const client = await mongoclient.connect(dbURL, {useNewUrlParser: true, useUnifiedTopology: true})
     let db = client.db('projectrestapi')
-    let data = await db.collection("passreset").findOne({"user_name":req.params.user})
+    let data = await db.collection("passreset").findOne({"randomString":req.params.str})
     console.log(data["randomString"])
     console.log(req.params.str)
     res.status(200).json({"data":data["randomString"],"params":req.params.str})
