@@ -5,11 +5,12 @@ const mongodb = require('mongodb')
 const mongoclient = mongodb.MongoClient;
 const dbURL = process.env.DB_URL
 const bcrypt = require('bcrypt')
+const cors = require('cors')
 const port = process.env.PORT||8000
 
 app.use(express.json())
 
-app.get("/", async (req,res)=>{
+app.get("/", cors(),async (req,res)=>{
     const client = await mongoclient.connect(dbURL, {useNewUrlParser: true, useUnifiedTopology: true})//
     let db = client.db('projectrestapi')
     let user  = await db.collection('passreset').find().toArray()
@@ -17,7 +18,7 @@ app.get("/", async (req,res)=>{
 })
 //
 
-app.post("/", async (req,res)=>{
+app.post("/",cors(), async (req,res)=>{
     const client = await mongoclient.connect(dbURL, {useNewUrlParser: true, useUnifiedTopology: true})//
     let db = client.db('projectrestapi')
     
