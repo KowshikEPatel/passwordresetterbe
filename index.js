@@ -75,9 +75,9 @@ app.post("/forgotpw",cors(),async (req,res)=>{
       pass: "JYqAD1zNNwhS7Tc82d"      , // generated ethereal password
     },
   });
-
-  let randomURL = `https://kp-passwordresetter.herokuapp.com/resetpassword/`+randomstring.generate()
-  let stored  = await db.collection('passreset').findOneAndUpdate(req.body,{$set:{"randomString":randomURL}})
+  let key = randomstring.generate()
+  let randomURL = `https://kp-passwordresetter.herokuapp.com/resetpassword/`+key
+  let stored  = await db.collection('passreset').findOneAndUpdate(req.body,{$set:{"randomString":key}})
   let info = await transporter.sendMail({
     from: '"felicia24@ethereal.email" <felicia24@ethereal.email>', // sender address
     to:  data["email"], // list of receivers "bar@example.com, baz@example.com"
