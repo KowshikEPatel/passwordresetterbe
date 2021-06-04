@@ -89,14 +89,13 @@ app.post("/forgotpw",cors(),async (req,res)=>{
     res.status(200).json({info,stored})
 })
 
-app.get("/resetpassword/:str",cors(),async(req,res)=>{
+app.post("/resetpassword/:str",cors(),async(req,res)=>{
 
     const client = await mongoclient.connect(dbURL, {useNewUrlParser: true, useUnifiedTopology: true})
     let db = client.db('projectrestapi')
     let data = await db.collection("passreset").findOne({"randomString":req.params.str})
-    console.log(data["randomString"])
-    console.log(req.params.str)
-    res.status(200).json({"data":data})
+    
+    res.status(200).json({"data":data,"str":req.params.str})
 
 })
 app.listen(port,()=>console.log("app started at "+port))
