@@ -11,8 +11,9 @@ const nodemailer = require("nodemailer");
 const port = process.env.PORT||8000
 
 app.use(express.json())
+app.use(cors())
 
-app.get("/", cors(),async (req,res)=>{
+app.get("/", async (req,res)=>{
     const client = await mongoclient.connect(dbURL, {useNewUrlParser: true, useUnifiedTopology: true})//
     let db = client.db('projectrestapi')
     let user  = await db.collection('passreset').find().toArray()
@@ -20,7 +21,7 @@ app.get("/", cors(),async (req,res)=>{
 })
 //
 
-app.post("/",cors(), async (req,res)=>{
+app.post("/",async (req,res)=>{
     const client = await mongoclient.connect(dbURL, {useNewUrlParser: true, useUnifiedTopology: true})//
     let db = client.db('projectrestapi')
     
@@ -41,7 +42,7 @@ app.post("/",cors(), async (req,res)=>{
 })
 
 //creating a new  user
-app.post("/newuser",cors(),async (req,res)=>{
+app.post("/newuser",async (req,res)=>{
     
     bcrypt.genSalt(11,(err,salt)=>{
         bcrypt.hash(req.body["password"],salt, async (err,hash)=>{
@@ -61,7 +62,7 @@ app.post("/newuser",cors(),async (req,res)=>{
     
 })
 
-app.post("/forgotpw",cors(),async (req,res)=>{
+app.post("/forgotpw",async (req,res)=>{
     const client = await mongoclient.connect(dbURL, {useNewUrlParser: true, useUnifiedTopology: true})
     let db = client.db('projectrestapi')
     let data = await db.collection("passreset").findOne(req.body)
@@ -89,7 +90,7 @@ app.post("/forgotpw",cors(),async (req,res)=>{
     res.status(200).json({info,stored,key})
 })
 
-app.post("/resetpassword/:str",cors(),async(req,res)=>{
+app.post("/resetpassword/:str",async(req,res)=>{
 
     const client = await mongoclient.connect(dbURL, {useNewUrlParser: true, useUnifiedTopology: true})
     let db = client.db('projectrestapi')
