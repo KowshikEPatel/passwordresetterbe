@@ -97,10 +97,11 @@ app.post("/resetpassword/:str",async(req,res)=>{
     
     bcrypt.genSalt(11,(err,salt)=>{
         bcrypt.hash(req.body["password"],salt, async (err,hash)=>{
-                    
+
             let user = await db.collection("passreset").findOneAndUpdate({"randomString":req.params.str},{$set:{"password":hash}})
             res.status(200).json({"str":req.params.str,"user":user})
         })})
+    client.close()
     
 
 })
