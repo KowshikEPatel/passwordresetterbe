@@ -76,7 +76,7 @@ app.post("/forgotpw",cors(),async (req,res)=>{
     },
   });
   let key = randomstring.generate()
-  let randomURL = `https://kp-passwordresetter.herokuapp.com/resetpassword/`+key
+  let randomURL = `https://blissful-rosalind-539ba2.netlify.app/`+key// https://kp-passwordresetter.herokuapp.com/resetpassword/
   let stored  = await db.collection('passreset').findOneAndUpdate(req.body,{$set:{"randomString":key}})
   let info = await transporter.sendMail({
     from: '"felicia24@ethereal.email" <felicia24@ethereal.email>', // sender address
