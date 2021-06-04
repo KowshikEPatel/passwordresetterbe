@@ -94,9 +94,14 @@ app.post("/resetpassword/:str",async(req,res)=>{
 
     const client = await mongoclient.connect(dbURL, {useNewUrlParser: true, useUnifiedTopology: true})
     let db = client.db('projectrestapi')
-    let data = await db.collection("passreset").findOne({"randomString":req.params.str})
     
-    res.status(200).json({"data":data,"str":req.params.str})
+    bcrypt.genSalt(11,(err,salt)=>{
+        bcrypt.hash(req.body["password"],salt, async (err,hash)=>{
+                    
+            let user = await db.collection("passreset").findOneAndUpdate({"randomString":req.params.str},{$set:{"password":hash}})
+            res.status(200).json({"str":req.params.str,"user":user})
+        })})
+    
 
 })
 app.listen(port,()=>console.log("app started at "+port))
