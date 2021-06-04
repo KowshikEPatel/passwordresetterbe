@@ -86,7 +86,7 @@ app.post("/forgotpw",cors(),async (req,res)=>{
     <a href="${randomURL}">link</a> to reset your password </p> `, // html body
   });
 
-    res.status(200).json({info,stored})
+    res.status(200).json({info,stored,key})
 })
 
 app.post("/resetpassword/:str",cors(),async(req,res)=>{
