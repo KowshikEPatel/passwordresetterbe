@@ -3,12 +3,12 @@ const express  = require("express")
 const app = express()
 const mongodb = require('mongodb')
 const mongoclient = mongodb.MongoClient;
-const dbURL = "mongodb+srv://m001-student:m001-student@cluster0.qslea.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"//process.env.DBURL||'mongodb://mongodb0.example.com:27017'process.env.DB_URL
+const dbURL = process.env.DB_URL
 const bcrypt = require('bcrypt')
 const cors = require('cors')
 const randomstring = require('randomstring')
 const nodemailer = require("nodemailer");
-const port = process.env.PORT||8000
+const port = process.env.PORT
 
 app.use(express.json())
 app.use(cors())
@@ -72,12 +72,12 @@ app.post("/forgotpw",async (req,res)=>{
     port: 587,
     secure: false, // true for 465, false for other ports
     auth: {
-      user: "felicia24@ethereal.email", // generated ethereal user
-      pass: "JYqAD1zNNwhS7Tc82d"      , // generated ethereal password
+      user: process.env.EMAIL, // generated ethereal user
+      pass: process.env.PASSWORD, // generated ethereal password
     },
   });
   let key = randomstring.generate()
-  let randomURL = `https://blissful-rosalind-539ba2.netlify.app/resetpassword/`+key// https://kp-passwordresetter.herokuapp.com/resetpassword/
+  let randomURL = `https://blissful-rosalind-539ba2.netlify.app/resetpassword/`+key
   let stored  = await db.collection('passreset').findOneAndUpdate(req.body,{$set:{"randomString":key}})
   let info = await transporter.sendMail({
     from: '"felicia24@ethereal.email" <felicia24@ethereal.email>', // sender address
